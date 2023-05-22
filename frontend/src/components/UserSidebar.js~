@@ -1,0 +1,19 @@
+import {Sidebar, Menu, MenuItem} from 'react-pro-sidebar'
+
+
+import './UserSidebar.css'
+
+const UserSidebar = () => {
+
+    return (
+	    <Sidebar>
+	    <Menu>
+	    <MenuItem> Home </MenuItem>
+	    <MenuItem> Previous Workouts </MenuItem>
+	    <MenuItem> Fitness Progress </MenuItem>
+	    </Menu>
+	    </Sidebar>
+    )
+}
+
+export default UserSidebar

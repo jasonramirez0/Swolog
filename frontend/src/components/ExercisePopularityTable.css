@@ -1,0 +1,19 @@
+.exercise-popularity-table {
+    flex: 10;
+    width: 100%;
+    height: 60vh;
+}
+
+.exercise-popularity-table table {
+    margin-top: 20px;
+}
+
+.exercise-popularity-table input {
+    font-size: 17px;
+    margin-right: 15px;
+    width: min(325px, 20vw);
+}
+
+.exercise-popularity-table .top {
+    font-size: 17px;
+}

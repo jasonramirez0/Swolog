@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Saira:wght@500&display=swap');
+.home {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    gap: 100px;
+    align-items: center;
+}
+
+.login-container {
+    flex: 1;
+}
+
+.home .sign-in {
+    color: black;
+    font-family: 'Saira';
+    text-align: center;
+    font-size: 50px;
+}

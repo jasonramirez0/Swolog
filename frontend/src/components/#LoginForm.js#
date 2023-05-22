@@ -1,0 +1,65 @@
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import loginServices from '../services/login'
+import workoutServices from '../services/workouts'
+import './LoginForm.css'
+
+const LoginForm = ({ username, setUsername, password, setPassword, user,
+		    setUser, setErrorMessage, setLoggedIn }) => {
+
+    const [loginSuccessful, setLoginSuccessful] = useState(false)
+    
+    const handleLogin = async (event) => {
+	event.preventDefault()
+	try {
+	    const user = await loginServices.login({username, password})
+	    console.log(user)
+
+	    window.localStorage.setItem('loggedFitnessAppUser', JSON.stringify(user))
+	    workoutServices.setToken(user.token)
+	    setUsername('')
+	    setPassword('')
+	    setUser(user)
+	    setLoggedIn(true)
+	    console.log('login successful')
+	} catch(exception) {
+	    console.log('login unsuccessful')
+	    setErrorMessage('Wrong credentials')
+	    setTimeout(() => {
+		setErrorMessage(null)
+	    }, 5000)
+	}
+    }
+ return (
+    <div className="login-container">
+      <form className="login-form" onSubmit={handleLogin}>
+        <div className="form-group">
+          <label htmlFor="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            value={username}
+            onChange={({ target }) => setUsername(target.value)}
+          />
+        </div>
+        <div className="form-group">
+   <div>
+   <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={({ target }) => setPassword(target.value)}
+   />
+   </div>
+        </div>
+        <button type="submit">Login</button>
+        <Link to="/register" className="register-link">
+          Dont have an account? Register here.
+        </Link>
+      </form>
+    </div>
+    )
+}
+
+export default LoginForm

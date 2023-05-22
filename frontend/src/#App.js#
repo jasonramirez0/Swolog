@@ -1,0 +1,83 @@
+import axios from 'axios'
+import { useState, useEffect } from 'react'
+import exerciseServices from './services/exercises'
+import workoutServices from './services/workouts'
+
+const App = () => {
+
+    const [exercises, setExercises] = useState([])
+    const [workout, setWorkout] = useState({})
+
+    const [currSets, setCurrSets] = useState(0)
+    const [currReps, setCurrReps] = useState(0)
+    
+    useEffect(() => {
+	exerciseServices
+	    .getAll()
+	    .then(exercises => {
+		setExercises(exercises)
+	    })
+    }, [])
+
+    const handleSetChange = (event) => {	
+	setCurrSets(event.target.value)
+    }
+
+    const handleRepChange = (event) => {
+	setCurrReps(event.target.value)
+    }
+
+    const addCluster = (event) => {
+	event.preventDefault()
+	const exercise = event.target.elements.exercises.value
+	const sets = event.target.elements.sets.value
+	const reps = event.target.elements.sets.value
+	console.log(`exercise name ${exercise} sets ${sets} reps ${reps}`)
+	const newCluster = {'exercise': exercise, 'sets': sets, 'reps': reps}
+
+	if (Object.keys(workout).length === 0) {
+	    console.log('new workout')
+	    workoutServices
+		.create(newCluster)
+		.then(createdWorkout => {
+		    console.log(createdWorkout)
+		    setWorkout(createdWorkout => createdWorkout.data)
+		    console.log(workout.clusters)
+	 	})
+	    
+	} else {
+	    console.log('existing workout')
+	    console.log(typeof workout) 
+	    const updatedWorkout = workout.concat(newCluster)
+	    workoutServices
+		.update(workout.id, updatedWorkout)
+		.then(updatedWorkout => {
+		    setWorkout(updatedWorkout)
+		})
+	}
+    }
+	
+    return (
+	    <div>
+	        <p> Fitness Tracking App </p>
+	    
+	    <form onSubmit={addCluster}>		
+	        <div>
+		    <select name="exercises" id="exercises">
+	                {exercises.map(exercise => <option value={exercise.name}>{exercise.name}</option>)}
+	            </select>		
+		
+		    <label htmlFor="sets"> Sets </label>
+		    <input id="sets" type="text" value={currSets} onChange={handleSetChange}/>
+				
+		    <label htmlFor="reps"> Reps </label>
+	            <input id="reps" type="text" value={currReps} onChange={handleRepChange} />
+		    <button type="submit"> Add </button>
+	        </div>
+	    </form>	   
+	    </div>
+    )
+	    
+}
+
+export default App

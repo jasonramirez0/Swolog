@@ -1,0 +1,33 @@
+.user-progress {
+    display: flex;
+    flex-direction: column;
+    justify-content: top;
+    flex: 10;
+    width: 100%;
+    height: 100%;
+}
+
+.user-progress-chart {
+    margin-top: 20px;
+    min-width: 400px;
+    min-height: 500px;
+    background-color: white;
+    border: 2px solid rgba(75, 192, 192, 1);
+    border-radius: 6px;
+}
+
+.user-progress .choose-exercise {
+    width: 70%;
+    font-size: 17px;
+}
+
+.user-progress input {
+    font-size: 17px;
+    margin-right: 15px;
+    width: min(325px, 20vw);
+}   
+
+.choose-exercise #exercise-label {
+    margin-left: 25px;
+    margin-right: 25px;
+}

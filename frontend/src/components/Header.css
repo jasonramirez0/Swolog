@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Saira:wght@500&display=swap');
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color:  rgb(225, 0, 0);
+    padding: 10px;
+    margin-bottom: 10px;
+    font-family: 'Saira';
+    color: white;
+    width: 100vw;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+}
+
+.nav-menu {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.nav-menu ul {
+    display: flex;
+    width: 50%;
+    list-style: none;
+}
+
+.nav-menu li {
+    margin-right: 20px;
+    color: white;
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    
+}
+
+.nav-menu a {
+    color: white;
+}
+.app-name {
+    font-size: 30px;
+    color: white;
+    text-align: left;
+    margin-left: 30px;
+}
+
+.right-header {
+    display: flex;
+    width: 40%;
+    height: 100%;
+    align-items: center;
+}
+
+.logout {
+    width: 15vw;
+    height: max(5vh, 90px);
+    margin-right: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logout #logout-button {
+    font: 10px;
+    width: 50%;
+    height: 50%;
+    margin: 5px;
+    color: white;
+}

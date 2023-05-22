@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/static/css/main.7304530d.css",
+    "main.js": "/static/js/main.641fde70.js",
+    "static/media/maleHumanBodyBackImage.png": "/static/media/maleHumanBodyBackImage.ccf2ca1eb607c1f8ff79.png",
+    "static/media/maleHumanBodyImage.png": "/static/media/maleHumanBodyImage.e1172ee904c4680953a3.png",
+    "index.html": "/index.html",
+    "main.7304530d.css.map": "/static/css/main.7304530d.css.map",
+    "main.641fde70.js.map": "/static/js/main.641fde70.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7304530d.css",
+    "static/js/main.641fde70.js"
+  ]
+}

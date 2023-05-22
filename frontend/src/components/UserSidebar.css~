@@ -1,0 +1,19 @@
+body {
+    margin: 0;
+    height: 100vh;
+    color: red;
+    
+}
+
+.Sidebar {
+    padding: 500px;
+}
+
+.Menu {
+    padding: 500px;
+    background: blue;
+}
+
+
+
+

@@ -1,0 +1,4 @@
+MONGODB_URI=mongodb+srv://jr:Isamu2016!@cluster0.bcf8dko.mongodb.net/exerciseApp?retryWrites=true&w=majority
+PORT=3001
+TEST_MONGODB_URI=mongodb+srv://jr:Isamu2016!@cluster0.bcf8dko.mongodb.net/testExerciseApp?retryWrites=true&w=majority
+SECRET=secret

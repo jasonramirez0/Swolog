@@ -1,0 +1,28 @@
+import { useState } from 'react'
+import LoginForm from './LoginForm'
+import {BrowserRouter as Router, Link } from 'react-router-dom'
+import './Home.css'
+
+const Home = ({loggedIn, setLoggedIn, user, setUser}) => {
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')    
+    console.log(loggedIn)
+    return (
+
+      <LoginForm
+        username={username}
+        setUsername={setUsername}
+        password={password}
+        setPassword={setPassword}
+        user={user}
+        setUser={setUser}
+        setErrorMessage={setErrorMessage}
+        setLoggedIn={setLoggedIn}
+      />
+    
+    
+  )
+}
+
+export default Home

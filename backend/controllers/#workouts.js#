@@ -1,0 +1,129 @@
+const workoutsRouter = require('express').Router()
+const {Workout, Cluster} = require('../models/workout')
+const User = require('../models/user')
+const Exercise = require('../models/exercise')
+const jwt = require('jsonwebtoken')
+
+workoutsRouter.get('/', async (request, response) => {
+    let workouts = null
+    const token = getTokenFrom(request)
+    try { if (token) {
+	const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+	if (!decodedToken.id) {
+	    return response.status(401).json({error: 'token invalid'})
+        }   
+        const user = await User.findById(decodedToken.id)
+	console.log(`user ${user}`)
+	workouts = await Workout.find({user: user.id})
+    } else {
+	console.log('all workouts obtained')
+	workouts = await Workout.find({})
+    }
+	} catch (error) {
+	    console.error(error)
+	}
+    console.log(`workouts ${workouts}`)
+    let populatedWorkouts = await Promise.all(
+	workouts.map( async (workout) => {
+	    const populatedWorkout = workout.populate({
+		      path: 'clusters',
+		      populate: {
+			  path: 'exercise',
+			  model: 'Exercise'
+		      },
+	    })
+	    return populatedWorkout
+	})
+    )
+    
+    
+    console.log(`workouts retrieved ${populatedWorkouts}`)
+    response.json(populatedWorkouts)
+})
+
+const getTokenFrom = request => {
+    const authorization = request.get('authorization')
+
+    if (authorization && authorization.startsWith('Bearer ')) {
+	return authorization.replace('Bearer ', '')
+    }
+    return null
+}
+
+workoutsRouter.post('/', async (request, response) => {
+    console.log('post')  
+    const body = request.body
+    const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+    if (!decodedToken.id) {
+	return response.status(401).json({error: 'token invalid'})
+    }   
+    const user = await User.findById(decodedToken.id)
+    const exercise = await Exercise.findOne({name: body.exercise})
+    console.log(`exercise ${exercise}`)
+    const cluster = new Cluster({
+	exercise: exercise._id,
+	sets: body.sets,
+	reps: body.reps
+    })
+    console.log(`new cluster ${cluster}`)
+    const workout = new Workout({
+	clusters: [cluster],
+        user: user.id
+    })
+    const savedWorkout = await workout.save()
+    user.workouts = user.workouts.concat(savedWorkout._id)
+    const savedUser = await user.save()    
+    const populatedWorkout = await savedWorkout
+		  .populate({
+		      path: 'clusters',
+		      populate: {
+			  path: 'exercise',
+			  model: 'Exercise'
+		      },
+		  })
+    console.log(populatedWorkout)
+    response.json(populatedWorkout); 
+})
+
+workoutsRouter.put('/:id', async (request, response) => {
+    console.log('update')
+    const body = request.body
+    
+    const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+    
+    if (!decodedToken.id) {
+	console.log('invalid')
+	return response.status(401).json({error: 'token invalid'})
+    }
+    const user = await User.findById(decodedToken.id)
+    const clusters = request.body.clusters
+    const latestCluster = clusters[clusters.length-1]
+    const exercise = await Exercise.findOne({name: latestCluster.exercise})
+    console.log(`exercise to add ${exercise}`)
+    const clusterToAdd = new Cluster({
+	exercise: exercise._id,
+	sets: latestCluster.sets,
+	reps: latestCluster.reps
+    })
+    console.log(`cluster to add ${clusterToAdd}`)
+    const workout = await Workout.findById(request.params.id)
+    const updatedWorkoutClusters = workout.clusters.concat(clusterToAdd)
+    console.log(`updated workout clusters ${updatedWorkoutClusters}`)
+    const updatedWorkout = await Workout.findByIdAndUpdate(request.params.id, {clusters: updatedWorkoutClusters}, {new: true})
+    const populatedWorkout = await updatedWorkout
+		  .populate({
+		      path: 'clusters',
+		      populate: {
+			  path: 'exercise',
+			  model: 'Exercise'
+		      },
+		  })
+    populatedWorkout.clusters.map(cluster => {
+	console.log(cluster.exercise)
+    })
+    console.log(`returned workout ${populatedWorkout}`)
+    response.json(populatedWorkout)
+})   
+
+module.exports = workoutsRouter
+

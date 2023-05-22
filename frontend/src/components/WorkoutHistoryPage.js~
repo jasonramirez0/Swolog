@@ -1,0 +1,155 @@
+import { useState, useEffect } from 'react'
+import UserSidebar from '../components/UserSidebar'
+import workoutServices from '../services/workouts'
+import exerciseServices from '../services/exercises'
+import './WorkoutHistoryPage.css'
+import Header from './Header'
+
+import maleHumanBodyImage from '../maleHumanBodyImage.png'
+import maleHumanBodyBackImage from '../maleHumanBodyBackImage.png'
+import maleHumanBodyMap from '../maleHumanBody.map'
+
+import { targetFrontMusclePoints, targetBackMusclePoints } from './targetMusclePoints'
+const HumanBody = ({targetMusclesUsed}) => {
+    console.log(targetMusclesUsed)
+    
+	return (
+		<div className="image-container">
+		<div className="image-wrapper">
+	        <img src={maleHumanBodyImage} alt="Male Human Body"/>
+	        
+		</div>
+		<div className="back-image-wrapper">
+		    <img src={maleHumanBodyBackImage} alt="Male Human Body Back"/>
+	        </div>
+
+	  <svg className="highlight" viewBox="0 0 430 750"
+	        style={{		
+		    top: '48px',
+		    left: '0px',
+		    width: '372px',
+		    height: '650px'
+	        }}
+		>
+		{Object.entries(targetMusclesUsed).map(([key, value]) => {
+		    return (<polygon
+		    points={targetFrontMusclePoints[key]}
+	            fill="red"
+			    stroke="red"
+	           strokeWidth="2"
+		     />
+		    )}
+						      
+	        )}
+	  </svg>
+	  <svg className="highlight" viewBox="0 0 430 750"
+	        style={{		
+		    top: '48px',
+		    left: '398px',
+		    width: '372px',
+		    height: '650px'
+	        }}
+		>
+		{Object.entries(targetMusclesUsed).map(([key, value]) => {
+		    return (<polygon
+		    points={targetBackMusclePoints[key]}
+	            fill="red"
+			    stroke="red"
+	           strokeWidth="2"
+		     />
+		    )}
+						      
+	        )}
+	         </svg>
+	  
+	        </div>
+	)
+}
+
+
+const WorkoutHistoryPage = ({setLoggedIn}) => {
+    
+    const [openDropdown, setOpenDropdown] = useState(false)
+    const [prevWorkouts, setPrevWorkouts] = useState([])
+    const [selectedWorkout, setSelectedWorkout] = useState(null)
+    const [targetMusclesUsed, setTargetMusclesUsed] = useState({})
+    
+    const handleDropdownClick = async () => {
+	setOpenDropdown(!openDropdown)
+	const userWorkouts = await workoutServices.get()
+   	console.log(`dropdown userWorkouts`)
+	setPrevWorkouts(userWorkouts)
+	setSelectedWorkout(userWorkouts[0])
+	console.log(prevWorkouts)	    
+    }
+
+    const handleSelectedWorkoutChange = (event) => {
+	console.log(`event ${event.target.value}`)
+	const newSelectedWorkout = prevWorkouts.find((workout) => workout.id === event.target.value)
+	setSelectedWorkout(newSelectedWorkout)
+    }
+    
+    const Dropdown = ({open, trigger}) => {
+	return (
+	        <>
+		    {trigger}
+	            {open ? (
+		    <ul>
+			    <select name="previous-workouts" id="previous-workouts" value={selectedWorkout ? selectedWorkout.id : ''} onChange={handleSelectedWorkoutChange}>
+			    {prevWorkouts.map((workout, index) =>
+				    <option key={workout.id} value={workout.id} selected> {workout.createdAt} </option>)}
+		        </select>
+		    </ul>
+	            ) : null}
+	        </>
+	    )
+    }
+    
+    const handleExerciseSelection =  (exercise) => {
+	const newTargetMusclesUsed = {}
+	exercise.targetMuscles.map( targetMuscle => {
+	    newTargetMusclesUsed[targetMuscle] = true
+	})
+	setTargetMusclesUsed(newTargetMusclesUsed)
+    }
+    
+    return (
+      <div className="wh-main">
+      <Header />
+      {/*<UserSidebar setLoggedIn={setLoggedIn}/>*/}
+      <div className="workout-display">
+      <div className="prev-workouts">
+	    <Dropdown
+	        open={openDropdown}
+	        trigger={<button onClick={handleDropdownClick}> Previous Workouts </button>}
+	    />
+      {selectedWorkout === null ? <label> Choose a workout  </label> :
+	<table>
+	<thead>
+	<tr>
+	<th>Exercise</th>
+	<th>Sets</th>
+	<th>Reps</th>
+	</tr>
+	</thead>
+	<tbody>
+	{selectedWorkout.clusters.map( cluster => (
+	  <tr key={cluster.id} className="labels" onClick={() => handleExerciseSelection(cluster.exercise)}>
+	  <td className="label">{cluster.exercise.name}</td>
+	  <td className="label">{cluster.sets}</td>
+	  <td className="label">{cluster.reps}</td>
+	  </tr>
+	))}
+	</tbody>
+	</table>						     	
+	}	    
+	</div>
+      <div className="human-body">
+	<HumanBody targetMusclesUsed={targetMusclesUsed}/>
+      </div>
+      </div>
+	</div>
+	   )
+}
+
+export default WorkoutHistoryPage

@@ -1,0 +1,53 @@
+#us {
+    margin: 0;
+    height: 100vh;
+    color: blue;
+    flex: 1;
+    text-align: center;
+    width: 100px;
+    
+}
+
+#sidebar {
+    height: 100vh;
+    background: darkgreen;
+}
+
+#menu {
+    margin-top: 50px;
+
+}
+.close-sb {
+    right: 0;
+    position: absolute;
+    line-height: 20px;
+    border-radius: 50%;
+    font-size: 25px;
+    z-index: 9999;
+
+}
+
+.menu-item {
+    border-top: 2px solid blue;
+    border-bottom: 2px solid blue;    
+}
+
+.logout-button {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    bottom: 20px;
+    align-items: center;
+    width: 100%;
+    height: 100px;
+}
+
+.logout-icon {
+    font-size: 25px
+}
+
+.logout-text {
+    padding: 10px;
+    font-size: 20px
+}
+

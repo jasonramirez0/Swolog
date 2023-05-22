@@ -1,0 +1,39 @@
+const app = require('./app')
+const config = require('./utils/config')
+const logger = require('./utils/logger')
+
+app.listen(config.PORT, () => {
+    logger.info(`Server running on port ${config.PORT}`)
+})
+
+
+app.get('/', (request, response) => {
+    response.send('<h1> Fitness Tracking App </h1>')
+})
+
+/*	
+app.post('/api/workouts', (request, response) => {
+    const body = request.body
+    const cluster = new Cluster({...body})
+    console.log(request.body)
+    const workout = new Workout({clusters: [cluster]})
+    workout.save().then(savedWorkout => {
+	console.log(response.json(savedWorkout))
+	
+	response.json(savedWorkout)
+	
+    })
+})
+
+app.put('/api/workouts/:id', (request, response) => {
+    const workout = {
+	clusters: orequest.body.clusters
+    }
+    
+    Workout.findByIdAndUpdate(request.params.id, workout, { new: true})
+	.then(updatedWorkout => {
+	    response.json(updatedWorkout)
+	})
+})
+
+*/
