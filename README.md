@@ -26,7 +26,7 @@ Installation
 
 To run the fitness tracker web app locally, follow these steps:
 
-1. Clone the repository:
+Clone the repository:
 
   git clone https://github.com/jasonramirez0/Swolog.git
   
