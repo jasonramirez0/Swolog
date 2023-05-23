@@ -28,16 +28,20 @@ To run the fitness tracker web app locally, follow these steps:
 
 Clone the repository:
 
-  git clone https://github.com/jasonramirez0/Swolog.git
+    git clone https://github.com/jasonramirez0/Swolog.git
   
-2. Navigate to the project directory:
+Navigate to the project directory:
 
-  cd fitness-tracker
+    cd fitness-tracker
 
-3. Install the dependencies for both the frontend and backend:
+Install the dependencies for both the frontend and backend:
 
-  npm install
-4. Set up the MongoDB connection by providing the necessary credentials and connection URL in the .env file.
-5. Start the development server:
+    npm install
+    
+Set up the MongoDB connection by providing the necessary credentials and connection URL in the .env file.
+
+Start the development server:
+
     npm run dev
-7. Access the web app in your browser at http://localhost:3000. 
+
+Access the web app in your browser at http://localhost:3000. 
