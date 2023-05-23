@@ -4,7 +4,7 @@ This is a web application built using React, Node.js, and MongoDB that serves as
 
 Deployed App
 
-The Fitness Tracker Web App is deployed and can be accessed at https://swolog.fly.dev/. Sign up for an account to start tracking your workouts and monitoring your progress.
+Swolog is deployed and can be accessed at https://swolog.fly.dev/. Sign up for an account to start tracking your workouts and monitoring your progress.
 
 Features
 
