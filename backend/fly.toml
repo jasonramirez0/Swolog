@@ -1,13 +1,14 @@
-# fly.toml app configuration file generated for swolog-backend on 2023-05-22T14:42:12-04:00
+# fly.toml app configuration file generated for swolog on 2023-05-23T15:22:03-04:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "swolog-backend"
+app = "swolog"
 primary_region = "atl"
 
 [env]
   PORT = "8080"
+
 [http_service]
   internal_port = 8080
   force_https = true

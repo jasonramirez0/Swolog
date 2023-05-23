@@ -9,4 +9,5 @@ const setToken = newToken => {
 
 const getUserWorkouts = async userId => {
     const userWorkouts = await axios.get(`${baseUrl}/${userId}`)
+    
 }
