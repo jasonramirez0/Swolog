@@ -2,6 +2,8 @@
 
 This is a web application built using React, Node.js, and MongoDB that serves as a fitness tracker and workout log. Users can create an account and log their workouts, view their previous workout history, and track their progress for different exercises using interactive charts.
 
+Demo Link: https://youtu.be/h45__GEFry0
+
 Deployed App
 
 Swolog is deployed and can be accessed at https://swolog.fly.dev/. Sign up for an account to start tracking your workouts and monitoring your progress.

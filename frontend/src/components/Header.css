@@ -50,6 +50,8 @@
     width: 40%;
     height: 100%;
     align-items: center;
+    margin-right: 10px;
+    justify-content: space-between;
 }
 
 .logout {
@@ -68,4 +70,5 @@
     height: 50%;
     margin: 5px;
     color: white;
+    margin-right: 10px;
 }

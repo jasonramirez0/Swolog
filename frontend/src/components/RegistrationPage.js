@@ -22,6 +22,7 @@ const RegistrationPage = () => {
       else {
         try {
           const user = await registrationServices.register({ username, name, password })
+          errorMessageDispatch( {type: "SET_ERROR", message: "user registered successfully!"})
           console.log('user registered successfully')
         } catch (exception) {
           errorMessageDispatch( {type: "SET_ERROR", message: "username already in use"} )

@@ -4,6 +4,7 @@ const User = require('../models/user')
 const Exercise = require('../models/exercise')
 const jwt = require('jsonwebtoken')
 
+
 // Gets token from request 'authorization' header
 const getTokenFrom = request => {
     const authorization = request.get('authorization')
@@ -90,27 +91,50 @@ workoutsRouter.get('/exercises', getWorkouts)
 //Retrieves modified user workouts (only clusters and createdAt retrieved) that have clusters with a specified exercise
 workoutsRouter.get('/clusters/:exercise', getWorkouts)
 
+//Creates a new workout. The clusters for the workout are passes via the request.
 workoutsRouter.post('/', async (request, response) => {
     const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
     if (!decodedToken.id) {
 	    return response.status(401).json({ error: 'token invalid' })
     }   
     const user = await User.findById(decodedToken.id)
-    const body = request.body
-    const exercise = await Exercise.findOne({name: body.exercise})
-    const cluster = new Cluster({
-        exercise: exercise._id,
-        weight: body.weight,
-        sets: body.sets,
-        reps: body.reps
-    })
-    const savedCluster = await cluster.save()
-    const updatedExerciseClusters = exercise.clusters.concat(savedCluster._id)
-    await Exercise.findByIdAndUpdate(
-        exercise._id, {clusters: updatedExerciseClusters},{ new:true }
-    )
+    
+    const clustersToAdd = []
+    await Promise.all(request.body.map(async cluster => {
+        console.log(`exercise Name ${cluster.exercise}`)
+
+        //Modified exercise name provided by request for database comparison purposes
+        const exerciseTemp = cluster.exercise.split('')
+        for (let i = 0; i < exerciseTemp.length - 1; i++) {
+        if (exerciseTemp[i] === '-') {
+            exerciseTemp[i + 1] = exerciseTemp[i + 1].toUpperCase()
+        }
+        }
+        const modifiedExercise = exerciseTemp.join('')
+        possibleExerciseNames = [modifiedExercise, modifiedExercise.substring(0, modifiedExercise.length-1)]
+        console.log(possibleExerciseNames)
+        const exercise = await Exercise.findOne({name: { $in: possibleExerciseNames }})
+
+        const clusterToAdd = new Cluster({
+            exercise: exercise._id,
+            weight: cluster.weight,
+            sets: cluster.sets,
+            reps: cluster.reps
+        })
+        console.log(clusterToAdd)
+        clustersToAdd.push(clusterToAdd)
+        console.log(`clusters to add ${clustersToAdd}`)
+        const savedCluster = await clusterToAdd.save()
+        const updatedExerciseClusters = exercise.clusters.concat(savedCluster._id)
+        await Exercise.findByIdAndUpdate(
+            exercise._id, {clusters: updatedExerciseClusters},{ new:true }
+        )
+    }))
+
+    console.log(clustersToAdd)
+
     const workout = new Workout({
-        clusters: [cluster],
+        clusters: clustersToAdd,
         user: user.id
     })
     const savedWorkout = await workout.save()
@@ -120,8 +144,8 @@ workoutsRouter.post('/', async (request, response) => {
 		  .populate({
 		      path: 'clusters',
 		      populate: {
-			  path: 'exercise',
-			  model: 'Exercise'
+                path: 'exercise',
+                model: 'Exercise'
 		      },
 		  })
     const modifiedWorkout = {
@@ -138,7 +162,6 @@ workoutsRouter.post('/', async (request, response) => {
 
 workoutsRouter.put('/:id', async (request, response) => {
     console.log('update')
-    const body = request.body
     const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
     
     if (!decodedToken.id) {

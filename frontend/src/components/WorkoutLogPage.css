@@ -10,6 +10,7 @@
 }
 
 .user-log {
+    flex: 3;
     display: flex;
     flex-direction: column;
     justify-content: top;
@@ -102,3 +103,61 @@ select#reps {
     width: 100%;
     font-size: 17px;
 }
+
+.log-chat {
+    display: flex;
+    margin-top: 250px;
+}
+
+.chat-interface {
+    flex: 1;
+    margin: 50px;
+    display: flex;
+    flex-direction: column;
+    max-height: 800px;
+    overflow-y: auto;
+}
+
+.chat-messages {
+    border: 1px solid black;
+    background: white;
+    text-align: left;
+    padding: 20px;
+}
+
+.chat-interface #message-form {
+    display: flex;
+    border: 1px solid rgb(225,0,0);
+}
+
+.chat-interface input {
+    flex: 1;
+}
+
+button {
+    background: black;
+}
+
+button:hover {
+    background: rgb(225,0,0);
+    cursor: pointer;
+}
+#save-workout-button {
+    border-radius: 20px;
+    width: 100px;
+    background: black;
+}
+
+#save-workout-button:hover {
+    background: rgb(225,0,0);
+    cursor: pointer;
+}
+
+.trash-icon:hover {
+    fill: rgb(225,0,0);
+    cursor: pointer;
+  }
+  
+  
+  
+  

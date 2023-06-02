@@ -21,11 +21,8 @@ const LoginForm = ({ username, setUsername, password, setPassword }) => {
         setPassword('')
         userDispatch({ type: "LOG IN", user: loggedInUser })
     } catch(exception) {
-        console.log('login unsuccessful')
         errorMessageDispatch( {type: "SET_ERROR", message: "username or password invalid"} )
-       
     }
-    console.log(`user ${user}`)
 }
 
  return (
@@ -54,6 +51,7 @@ const LoginForm = ({ username, setUsername, password, setPassword }) => {
           Dont have an account? Register here.
         </Link>
       </form>
+      *<label> View sample synthetic user profiles with the following username/password pairs: [username: ejale, password: password], [username: netet, password: password] </label>
     </div>
   )
 }

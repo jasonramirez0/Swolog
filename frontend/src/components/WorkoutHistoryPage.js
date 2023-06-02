@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import workoutServices from '../services/workouts'
-import './WorkoutHistoryPage.css'
 import Header from './Header'
 import maleHumanBodyImage from '../maleHumanBodyImage.png'
 import maleHumanBodyBackImage from '../maleHumanBodyBackImage.png'
+import './WorkoutHistoryPage.css'
 
 import { targetFrontMusclePoints, targetBackMusclePoints } from './targetMusclePoints'
 
@@ -63,14 +63,20 @@ const WorkoutHistoryPage = () => {
     const [targetMusclesUsed, setTargetMusclesUsed] = useState({})
 	const [selectedRow, setSelectedRow] = useState(-1)
     
+	useEffect(() => {
+		const fetchWorkouts = async () => {
+			const userWorkouts = await workoutServices.get()
+			if (userWorkouts.length !== 0) {
+				setPrevWorkouts(userWorkouts)
+				setSelectedWorkout(userWorkouts[userWorkouts.length-1])
+			}  
+		}
+		fetchWorkouts()
+	},[])
+
 	//Shows or hides 'dropdown' list of user's workouts (if any)
     const handleDropdownClick = async () => {
-		setOpenDropdown(!openDropdown)
-		const userWorkouts = await workoutServices.get()
-		if (userWorkouts.length !== 0) {
-			setPrevWorkouts(userWorkouts)
-			setSelectedWorkout(userWorkouts[0])
-		}    
+		setOpenDropdown(!openDropdown)  
     }
 
 	//Selects the workout from the Dropdown list
@@ -79,6 +85,20 @@ const WorkoutHistoryPage = () => {
 		setSelectedWorkout(newSelectedWorkout)
     }
     
+	// Formats date in 'mm/dd/yy hh:mm am/pm' format for user
+	const formatDate = (dateString) => {
+		const date = new Date(dateString)
+		const formattedDate = date.toLocaleString('en-US', {
+			month: 'numeric',
+			day: 'numeric',
+			year: '2-digit',
+			hour: 'numeric',
+			minute: '2-digit',
+			hour12: true
+		  })
+		  return formattedDate
+	}
+	
 	// 'dropdown' list that displays a list of saved user workouts
     const Dropdown = ({open, trigger}) => {
 		return (
@@ -89,7 +109,7 @@ const WorkoutHistoryPage = () => {
 						<select name="previous-workouts" id="previous-workouts" value={selectedWorkout ? selectedWorkout.id : ''} onChange={handleSelectedWorkoutChange}>
 							{prevWorkouts.map((workout, index) =>
 								<option key={workout.id} value={workout.id}> 
-									{workout.createdAt} 
+									{formatDate(workout.createdAt)} 
 								</option>)
 							}
 						</select>

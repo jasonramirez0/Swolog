@@ -12,17 +12,13 @@ const Header = () => {
 
     const handleLogout = () => {
         if (!user) {
-            console.log('no user signed in')
             return
         }
-        console.log('logging out')
         try {
             userDispatch({ type: "LOG OUT" })
             workoutServices.removeToken()
             window.localStorage.removeItem('loggedFitnessAppUser')
-            console.log('user logged out successfully')
         } catch (error) {
-            console.log('Error logging out:')
         }
     }
 
@@ -31,11 +27,18 @@ const Header = () => {
           <h1 className="app-name">Swolog</h1>
           <div className="right-header">
             <nav className="nav-menu">
-                <ul> 
-                    <li> <Link to="/dashboard">Dashboard</Link></li>
-                    <li> <Link to="/user">Add a Workout</Link></li>
-                    <li> <Link to="/workout-history">Workout History</Link></li>
-                    <li> <Link to="/register">Register</Link></li>
+                <ul>
+                    {user ? (
+                        <>
+                            <li> <Link to="/dashboard">Dashboard</Link></li>
+                            <li> <Link to="/user">Add a Workout</Link></li>
+                            <li> <Link to="/workout-history">Workout History</Link></li>
+                        </>
+                    ) : (
+                        <>
+                            <li> <Link to="/register">Register</Link></li>
+                        </>
+                    )}
                 </ul>
             </nav>
             <div className="logout">
